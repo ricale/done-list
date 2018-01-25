@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './App';
+import DoneList from './src';
 
-AppRegistry.registerComponent('DoneList', () => App);
+AppRegistry.registerComponent('DoneList', () => DoneList);
