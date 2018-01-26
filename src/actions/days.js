@@ -70,11 +70,11 @@ export const addDoneThing = (date, thing, {doneThings, thingDates}) => {
     const day = date.slice(6);
     const dayData = {
       date,
-      doneThings: doneThings.concat([thing])
+      doneThings: doneThings.concat([thing]).sort((a,b) => a - b)
     };
     const thingData = {
       thing,
-      dates: thingDates.concat(date)
+      dates: thingDates.concat(date).sort((a,b) => a - b)
     };
 
     Storage.set({

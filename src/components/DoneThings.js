@@ -8,11 +8,13 @@ class DoneThings extends Component {
     removeButton: false,
 
     style: {
-      alignItems: 'flex-start'
+      alignItems: 'flex-start',
+      marginLeft: 3,
+      marginRight: 3
     },
     thingStyle: {
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     nameStyle: {
       padding: 3,
