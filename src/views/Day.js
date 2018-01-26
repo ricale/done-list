@@ -16,27 +16,6 @@ class AddDoneThingForm extends Component {
     }
   };
 
-  render() {
-    const {name, inputStyle, onChangeText, onPressButton} = this.props;
-
-    return (
-      <View>
-        <TextInput
-          style={inputStyle}
-          value={name}
-          onChangeText={onChangeText}
-          />
-        <Button
-          title='Add'
-          onPress={onPressButton}
-          />
-      </View>
-    )
-  }
-}
-
-class DayView extends Component {
-
   constructor(props) {
     super(props);
     this.state = {};
@@ -47,35 +26,60 @@ class DayView extends Component {
   }
 
   handlePressAdd = () => {
-    const {day, dayData: {doneThings}, things, addDoneThing} = this.props;
     const {name} = this.state;
 
-    const thing = name;
+    if(!!name) {
+      this.props.onPressButton(name);
+      this.setState({name: ''});
+    }
+  }
+
+  render() {
+    const {inputStyle} = this.props;
+    const {name} = this.state;
+
+    return (
+      <View>
+        <TextInput
+          style={inputStyle}
+          value={name}
+          onChangeText={this.handleChangeDoneThingName}
+          />
+        <Button
+          title='Add'
+          onPress={this.handlePressAdd}
+          />
+      </View>
+    )
+  }
+}
+
+class DayView extends Component {
+  handlePressAdd = (thingName) => {
+    const {day, dayData: {doneThings}, things, addDoneThing} = this.props;
+
     const date = day.format('YYYYMMDD');
-    const thingDates = (things[thing] || {}).dates || [];
-    addDoneThing(date, thing, {doneThings, thingDates});
+    const thingDates = (things[thingName] || {}).dates || [];
+    addDoneThing(date, thingName, {doneThings, thingDates});
     this.setState({name: ''});
   }
 
-  handlePressRemove = (name) => {
+  handlePressRemove = (thingName) => {
     const {day, dayData: {doneThings}, things, removeDoneThing} = this.props;
 
-    const thing = name;
     const date = day.format('YYYYMMDD');
-    const thingDates = (things[thing] || {}).dates || [];
-    removeDoneThing(date, thing, {doneThings, thingDates});
+    const thingDates = (things[thingName] || {}).dates || [];
+    removeDoneThing(date, thingName, {doneThings, thingDates});
   }
 
   render() {
     const {day, dayData: {doneThings}, things, inputStyle} = this.props;
-    const {name} = this.state;
 
     return (
       <Container>
-        <Text style={{width: '100%', textAlign: 'right'}}>DayView: {day.format()}</Text>
+        <Text style={{width: '100%'}}>{day.format('YYYY-MM-DD')}</Text>
 
         <AddDoneThingForm
-          onChangeText={this.handleChangeDoneThingName}
           onPressButton={this.handlePressAdd}
           />
 
