@@ -5,7 +5,7 @@ import {Actions} from 'react-native-router-flux';
 
 import Container from 'components/Container';
 import DoneThings from 'components/DoneThings';
-import {addDoneThing} from 'actions/days';
+import {addDoneThing, removeDoneThing} from 'actions/days';
 
 class AddDoneThingForm extends Component {
   static defaultProps = {
@@ -53,8 +53,17 @@ class DayView extends Component {
     const thing = name;
     const date = day.format('YYYYMMDD');
     const thingDates = (things[thing] || {}).dates || [];
-    addDoneThing(date, thing, {doneThings: doneThings || [], thingDates})
+    addDoneThing(date, thing, {doneThings, thingDates});
     this.setState({name: ''});
+  }
+
+  handlePressRemove = (name) => {
+    const {day, dayData: {doneThings}, things, removeDoneThing} = this.props;
+
+    const thing = name;
+    const date = day.format('YYYYMMDD');
+    const thingDates = (things[thing] || {}).dates || [];
+    removeDoneThing(date, thing, {doneThings, thingDates});
   }
 
   render() {
@@ -70,7 +79,12 @@ class DayView extends Component {
           onPressButton={this.handlePressAdd}
           />
 
-        <DoneThings doneThings={doneThings} allThings={things} />
+        <DoneThings
+          doneThings={doneThings}
+          allThings={things}
+          onPressRemove={this.handlePressRemove}
+          fontSize={20}
+          />
       </Container>
     );
   }
@@ -89,7 +103,9 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     addDoneThing: (...args) =>
-      dispatch(addDoneThing(...args))
+      dispatch(addDoneThing(...args)),
+    removeDoneThing: (...args) =>
+      dispatch(removeDoneThing(...args)),
   }
 }
 

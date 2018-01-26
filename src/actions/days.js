@@ -14,6 +14,11 @@ const actions = createActions({
       FAILURE: () => ({}),
     },
 
+    REMOVE_DONE_THING: {
+      SUCCESS: (dayData, thingData) => ({dayData, thingData}),
+      FAILURE: () => ({}),
+    }
+
     // CREATE: {
     //   SUCCESS: () => ({}),
     //   FAILURE: () => ({}),
@@ -85,6 +90,43 @@ export const addDoneThing = (date, thing, {doneThings, thingDates}) => {
 
     return dispatch(
       actions.days.addDoneThing.success(dayData, thingData)
-    )
+    );
+  }
+}
+
+const spliceArray = (array, item) => {
+  const result = array.slice(0);
+  const itemIndex = result.indexOf(item);
+  result.splice(itemIndex, 1);
+  return result;
+}
+
+export const removeDoneThing = (date, thing, {doneThings, thingDates}) => {
+  return dispatch => {
+    const yearmonth = date.slice(0, 6);
+    const day = date.slice(6);
+    const dayData = {
+      date,
+      doneThings: spliceArray(doneThings, thing)
+    };
+    const thingData = {
+      thing,
+      dates: spliceArray(thingDates, date)
+    };
+
+    Storage.set({
+      key:  yearmonth,
+      id:   day,
+      data: dayData
+    });
+    Storage.set({
+      key:  'things',
+      id:   thing,
+      data: thingData
+    });
+
+    return dispatch(
+      actions.days.removeDoneThing.success(dayData, thingData)
+    );
   }
 }
