@@ -4,10 +4,10 @@ import {View, TextInput, Button, Text} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 import Container from 'components/Container';
-
+import DoneThings from 'components/DoneThings';
 import {addDoneThing} from 'actions/days';
 
-class DayView extends Component {
+class AddDoneThingForm extends Component {
   static defaultProps = {
     inputStyle: {
       margin: 1,
@@ -15,6 +15,27 @@ class DayView extends Component {
       borderColor: 'gray'
     }
   };
+
+  render() {
+    const {name, inputStyle, onChangeText, onPressButton} = this.props;
+
+    return (
+      <View>
+        <TextInput
+          style={inputStyle}
+          value={name}
+          onChangeText={onChangeText}
+          />
+        <Button
+          title='Add'
+          onPress={onPressButton}
+          />
+      </View>
+    )
+  }
+}
+
+class DayView extends Component {
 
   constructor(props) {
     super(props);
@@ -37,30 +58,19 @@ class DayView extends Component {
   }
 
   render() {
-    const {day, dayData: {doneThings}, inputStyle} = this.props;
+    const {day, dayData: {doneThings}, things, inputStyle} = this.props;
     const {name} = this.state;
 
     return (
       <Container>
         <Text style={{width: '100%', textAlign: 'right'}}>DayView: {day.format()}</Text>
 
-        <View>
-          <TextInput
-            style={inputStyle}
-            value={name}
-            onChangeText={this.handleChangeDoneThingName}
-            />
-          <Button
-            title='Add'
-            onPress={this.handlePressAdd}
-            />
-        </View>
+        <AddDoneThingForm
+          onChangeText={this.handleChangeDoneThingName}
+          onPressButton={this.handlePressAdd}
+          />
 
-        <View>
-          {doneThings.map((t,i) =>
-            <Text key={i}>{t}</Text>
-          )}
-        </View>
+        <DoneThings doneThings={doneThings} allThings={things} />
       </Container>
     );
   }

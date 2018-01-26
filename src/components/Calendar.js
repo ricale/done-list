@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
 import DateUtil from 'utils/DateUtil';
+import DoneThings from 'components/DoneThings';
 
 const Day = (props) => {
   const {
@@ -11,7 +12,8 @@ const Day = (props) => {
     emptyStyle,
     d,
     onPress,
-    doneThings
+    doneThings,
+    things
   } = props;
 
   if(!d) {
@@ -23,9 +25,7 @@ const Day = (props) => {
   return (
     <TouchableOpacity style={style} onPress={() => onPress(d)}>
       <Text style={textStyle(d)}>{d.format('D')}</Text>
-      {(doneThings || []).map((d,i) =>
-        <Text key={i}>{d}</Text>
-      )}
+      <DoneThings doneThings={doneThings} allThings={things} />
     </TouchableOpacity>
   )
 };
@@ -82,7 +82,7 @@ export default class Calendar extends Component {
   }
 
   render() {
-    const {style, onPressDay, data} = this.props;
+    const {style, onPressDay, data, things} = this.props;
     return (
       <View style={style}>
         {this.getDates().map((d,i) =>
@@ -90,6 +90,7 @@ export default class Calendar extends Component {
             key={i}
             d={d}
             doneThings={(data[d && d.format('YYYYMMDD')] || {}).doneThings}
+            things={things}
             onPress={onPressDay}
             />
         )}

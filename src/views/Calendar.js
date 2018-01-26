@@ -18,12 +18,13 @@ class CalendarView extends Component {
   }
 
   render() {
-    const {days} = this.props;
+    const {days, things} = this.props;
     return (
       <Container>
         <Calendar
           onPressDay={(day) => Actions.day({day})}
-          data={days} />
+          data={days}
+          things={things || []} />
       </Container>
     );
   }
