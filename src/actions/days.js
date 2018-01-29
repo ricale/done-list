@@ -1,5 +1,6 @@
 import {createActions} from 'redux-actions';
 import Storage from 'utils/Storage';
+import Scheme from 'scheme';
 
 const actions = createActions({
 
@@ -64,33 +65,57 @@ export const getDays = (beginDate, endDate) => {
   }
 }
 
-export const addDoneThing = (date, thing, {doneThings, thingDates}) => {
+const getIdForNewThing = () => {
+  return Storage.getByKey('things').then(result =>
+    result.length === 0 ?
+      0 :
+      (Math.max(
+        ...result.map(r => r.id)
+      ) + 1)
+  )
+}
+
+const saveThing = (thing, date) => {
+  const dates = (thing.dates || []).concat(date).sort((a,b) => a - b);
+  const thingData = Scheme.Thing(thing.id, thing.name, dates);
+  Storage.set({
+    key:  'things',
+    id:   thing.name,
+    data: thingData
+  });
+  return thingData;
+}
+
+const saveDay = (day, thingId) => {
+  const yearmonth = day.date.slice(0, 6);
+  const dayOfMonth = day.date.slice(6);
+  const dayData = Scheme.Day(day.date, day.doneThings.concat([thingId]).sort((a,b) => a - b));
+  Storage.set({
+    key:  yearmonth,
+    id:   dayOfMonth,
+    data: dayData
+  });
+  return dayData;
+}
+
+export const addDoneThing = (day, thing) => {
   return dispatch => {
-    const yearmonth = date.slice(0, 6);
-    const day = date.slice(6);
-    const dayData = {
-      date,
-      doneThings: doneThings.concat([thing]).sort((a,b) => a - b)
-    };
-    const thingData = {
-      thing,
-      dates: thingDates.concat(date).sort((a,b) => a - b)
-    };
+    if(thing.id === undefined) {
+      return getIdForNewThing().then(id => {
+        const thingData = saveThing({...thing, id}, day.date);
+        const dayData = saveDay(day, thingData.id);
+        return dispatch(
+          actions.days.addDoneThing.success(dayData, thingData)
+        )
+      });
 
-    Storage.set({
-      key:  yearmonth,
-      id:   day,
-      data: dayData
-    });
-    Storage.set({
-      key:  'things',
-      id:   thing,
-      data: thingData
-    });
-
-    return dispatch(
-      actions.days.addDoneThing.success(dayData, thingData)
-    );
+    } else {
+      const thingData = saveThing(thing, day.date);
+      const dayData = saveDay(day, thingData.id);
+      return dispatch(
+        actions.days.addDoneThing.success(dayData, thingData)
+      )
+    }
   }
 }
 
@@ -101,27 +126,21 @@ const spliceArray = (array, item) => {
   return result;
 }
 
-export const removeDoneThing = (date, thing, {doneThings, thingDates}) => {
+export const removeDoneThing = (date, thingName, {doneThings, thingDates}) => {
   return dispatch => {
     const yearmonth = date.slice(0, 6);
     const day = date.slice(6);
-    const dayData = {
-      date,
-      doneThings: spliceArray(doneThings, thing)
-    };
-    const thingData = {
-      thing,
-      dates: spliceArray(thingDates, date)
-    };
-
+    const dayData = Scheme.Day(date, spliceArray(doneThings, thingName));
     Storage.set({
       key:  yearmonth,
       id:   day,
       data: dayData
     });
+
+    const thingData = Scheme.Thing(thingName, spliceArray(thingDates, date));
     Storage.set({
       key:  'things',
-      id:   thing,
+      id:   thingName,
       data: thingData
     });
 

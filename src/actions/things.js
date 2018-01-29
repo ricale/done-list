@@ -14,7 +14,7 @@ export const getThings = () => {
   return dispatch => {
     return Storage.getByKey('things').then(values => {
       const result = values.reduce((hash, item) => {
-        hash[item.thing] = item;
+        hash[item.id] = item;
         return hash;
       }, {});
       dispatch(actions.things.fetch.success(result));

@@ -3,10 +3,12 @@ import {connect} from 'react-redux';
 import {View, Text} from 'react-native';
 
 import Container from 'components/Container';
+import {colors as defaultColors} from 'constants/colors';
 
 const Thing = (props) => {
   const {
-    thing,
+    id,
+    name,
     dates,
     style,
     nameStyle,
@@ -16,7 +18,7 @@ const Thing = (props) => {
 
   return (
     <View style={style}>
-      <Text style={nameStyle}>{thing}</Text>
+      <Text style={[nameStyle, {backgroundColor: defaultColors[id % defaultColors.length]}]}>{name}</Text>
       <View style={datesStyle}>
         {dates.map((d,j) =>
           <Text key={j} style={dateStyle}>{d}</Text>
@@ -28,6 +30,7 @@ const Thing = (props) => {
 
 Thing.defaultProps = {
   style: {
+    alignItems: 'flex-start',
     width: '50%',
     padding: 10,
     borderWidth: 1,

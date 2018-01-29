@@ -25,7 +25,7 @@ const Day = (props) => {
   return (
     <TouchableOpacity style={style} onPress={() => onPress(d)}>
       <Text style={textStyle(d)}>{d.format('D')}</Text>
-      <DoneThings doneThings={doneThings} allThings={things} />
+      <DoneThings doneThings={doneThings} />
     </TouchableOpacity>
   )
 };
@@ -81,16 +81,25 @@ export default class Calendar extends Component {
     return result;
   }
 
+  getDoneThings(days, d) {
+    const {things} = this.props;
+    const key = d && d.format('YYYYMMDD');
+    const day = days[key] || {};
+    const {doneThings} = day;
+
+    return (doneThings || []).map(id => things[id]);
+  }
+
   render() {
-    const {style, onPressDay, data, things} = this.props;
+    const {style, onPressDay, days, things} = this.props;
+
     return (
       <View style={style}>
-        {this.getDates().map((d,i) =>
+        {!!things && this.getDates().map((d,i) =>
           <Day
             key={i}
             d={d}
-            doneThings={(data[d && d.format('YYYYMMDD')] || {}).doneThings}
-            things={things}
+            doneThings={this.getDoneThings(days, d)}
             onPress={onPressDay}
             />
         )}

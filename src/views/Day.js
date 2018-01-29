@@ -56,35 +56,38 @@ class AddDoneThingForm extends Component {
 
 class DayView extends Component {
   handlePressAdd = (thingName) => {
-    const {day, dayData: {doneThings}, things, addDoneThing} = this.props;
+    const {day, things, addDoneThing} = this.props;
 
-    const date = day.format('YYYYMMDD');
-    const thingDates = (things[thingName] || {}).dates || [];
-    addDoneThing(date, thingName, {doneThings, thingDates});
+    const thingId = Object.keys(things).filter(id => things[id].name === thingName)[0];
+    addDoneThing(day, things[thingId] || {name: thingName});
     this.setState({name: ''});
   }
 
   handlePressRemove = (thingName) => {
-    const {day, dayData: {doneThings}, things, removeDoneThing} = this.props;
+    const {day, things, removeDoneThing} = this.props;
 
-    const date = day.format('YYYYMMDD');
-    const thingDates = (things[thingName] || {}).dates || [];
-    removeDoneThing(date, thingName, {doneThings, thingDates});
+    removeDoneThing(day, things[thingName]);
+  }
+
+  getDoneThings() {
+    const {day, things} = this.props;
+
+    return (day.doneThings || []).map(id => things[id]);
   }
 
   render() {
-    const {day, dayData: {doneThings}, things, inputStyle} = this.props;
+    const {day, things, inputStyle} = this.props;
 
     return (
       <Container>
-        <Text style={{width: '100%'}}>{day.format('YYYY-MM-DD')}</Text>
+        <Text style={{width: '100%'}}>{day.date}</Text>
 
         <AddDoneThingForm
           onPressButton={this.handlePressAdd}
           />
 
         <DoneThings
-          doneThings={doneThings}
+          doneThings={this.getDoneThings()}
           allThings={things}
           onPressRemove={this.handlePressRemove}
           fontSize={20}
@@ -96,10 +99,13 @@ class DayView extends Component {
 
 function mapStateToProps(state, ownProps) {
   const {days, things} = state;
-  const key = ownProps.day.format('YYYYMMDD');
-  const dayData = days[key] || {doneThings: []};
+  const date = ownProps.day.format('YYYYMMDD');
+  const day = days[date] || {
+    date,
+    doneThings: []
+  };
   return {
-    dayData,
+    day,
     things
   };
 }

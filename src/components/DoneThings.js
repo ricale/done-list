@@ -29,7 +29,9 @@ class DoneThings extends Component {
 
   getThingNameStyle(thing) {
     const {allThings, fontSize, nameStyle} = this.props;
-    const backgroundColor = (thing || {}).color || defaultColors[Object.keys(allThings).indexOf(thing)];
+    // const backgroundColor = (thing || {}).color || defaultColors[Object.keys(allThings).indexOf(thing)];
+    const backgroundColor = defaultColors[thing.id % 10];
+
     return {
       ...nameStyle,
       fontSize,
@@ -51,11 +53,11 @@ class DoneThings extends Component {
 
     return (
       <View style={style}>
-        {(doneThings || []).map((t,i) =>
+        {(doneThings || []).map((thing,i) =>
           <View key={i} style={thingStyle}>
-            <Text style={this.getThingNameStyle(t)}>{t}</Text>
+            <Text style={this.getThingNameStyle(thing)}>{thing.name}</Text>
             {onPressRemove &&
-              <TouchableOpacity style={removeButtonStyle} onPress={() => onPressRemove(t)}>
+              <TouchableOpacity style={removeButtonStyle} onPress={() => onPressRemove(thing)}>
                 <Text style={{fontSize: fontSize - 4}}>⨉</Text>
               </TouchableOpacity>
             }
