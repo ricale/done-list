@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, Text, TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import moment from 'moment';
 
@@ -22,11 +21,6 @@ class CalendarView extends Component {
     const {days, things} = this.props;
     return (
       <Container>
-        <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-          <TouchableOpacity onPress={() => Storage.clear()} style={{backgroundColor: 'red', padding: 10, margin: 1}}>
-            <Text style={{color: 'white', fontWeight: 'bold'}}>clear</Text>
-          </TouchableOpacity>
-        </View>
         {days && things &&
           <Calendar
             onPressDay={(day) => Actions.day({day})}

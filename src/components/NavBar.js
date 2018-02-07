@@ -16,21 +16,37 @@ export default class NavBar extends Component {
   }
 
   render() {
-    const {style, itemStyle, title, left, onPressLeft} = this.props;
+    const {
+      style,
+      itemStyle,
+      title,
+      left,
+      onPressLeft,
+      onPressRight
+    } = this.props;
 
     return (
       <View style={style}>
-        <TouchableOpacity
-          onPress={onPressLeft}
-          style={[itemStyle, {paddingLeft: 10}]}>
-          <Text style={{color: '#017afe'}}>{left}</Text>
-        </TouchableOpacity>
+        <View style={itemStyle}>
+          <TouchableOpacity
+            onPress={onPressLeft}
+            style={{paddingLeft: 10}}>
+            <Text style={{color: '#017afe'}}>{left}</Text>
+          </TouchableOpacity>
+        </View>
 
         <View style={itemStyle}>
           <Text style={{width: '100%', textAlign: 'center'}}>{title}</Text>
         </View>
 
-        <View style={[itemStyle, {flexDirection: 'row', justifyContent: 'flex-end'}]}>
+        <View style={[itemStyle, {flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}]}>
+          {!!onPressRight &&
+            <TouchableOpacity
+              onPress={onPressRight}
+              style={{paddingRight: 10}}>
+              <Text style={{color: '#017afe'}}>Config</Text>
+            </TouchableOpacity>
+          }
         </View>
       </View>
     )
