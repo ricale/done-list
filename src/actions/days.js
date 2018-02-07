@@ -1,5 +1,6 @@
 import {createActions} from 'redux-actions';
 import Storage from 'utils/Storage';
+import DateUtil from 'utils/DateUtil';
 import Scheme from 'scheme';
 
 const actions = createActions({
@@ -42,7 +43,7 @@ export const getDays = (beginDate, endDate) => {
     const delta = endDate.diff(beginDate, 'days') + 1;
 
     const keyAndIds = [...(new Array(delta))].map((_,i) => {
-      const formatted = beginDate.clone().add(i, 'days').format('YYYYMMDD');
+      const formatted = DateUtil.formatForStore(beginDate.clone().add(i, 'days'));
       const key = formatted.slice(0, 6);
       const id = formatted.slice(6);
       return {key, id};

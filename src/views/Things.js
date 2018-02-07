@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 
 import Container from 'components/Container';
+import ThingDates from 'components/ThingDates';
 import {colors as defaultColors} from 'constants/colors';
+import DateUtil from 'utils/DateUtil';
 
 const Thing = (props) => {
   const {
@@ -17,14 +20,16 @@ const Thing = (props) => {
   } = props;
 
   return (
-    <View style={style}>
-      <Text style={[nameStyle, {backgroundColor: defaultColors[id % defaultColors.length]}]}>{name}</Text>
-      <View style={datesStyle}>
-        {dates.map((d,j) =>
-          <Text key={j} style={dateStyle}>{d}</Text>
-        )}
-      </View>
-    </View>
+    <TouchableOpacity style={style} onPress={() => Actions.thing({id})}>
+      <Text style={[nameStyle, {backgroundColor: defaultColors[id % defaultColors.length]}]}>
+        {name}
+      </Text>
+      <ThingDates
+        dates={dates}
+        style={datesStyle}
+        dateStyle={dateStyle}
+        />
+    </TouchableOpacity>
   );
 };
 

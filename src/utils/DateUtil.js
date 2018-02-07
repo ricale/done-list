@@ -28,8 +28,31 @@ function getRecentDatesBeginWithMonOrThu(lastDate = moment(), period = 14 /* day
   ).concat(result);
 }
 
+function formatForStore(m) {
+  return m.format('YYYYMMDD');
+}
+
+function formatForDisplay(m, o = {}) {
+  const weekday = o.weekday;
+
+  if(typeof m === 'string') {
+    m = moment(m, 'YYYYMMDD');
+  }
+
+  const formatted = m.format('YYYY-MM-DD');
+
+  if(weekday) {
+    const weekdayFormat = ['', '월', '화', '수', '목', '금', '토', '일'][m.isoWeekday()]
+    return `${formatted} ${weekdayFormat}`;
+  }
+
+  return formatted;
+}
+
 export default {
   getRecentDates,
   getRecentDatesBeginWithMon,
-  getRecentDatesBeginWithMonOrThu
+  getRecentDatesBeginWithMonOrThu,
+  formatForStore,
+  formatForDisplay
 };

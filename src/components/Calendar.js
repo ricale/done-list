@@ -83,7 +83,7 @@ export default class Calendar extends Component {
 
   getDoneThings(days, d) {
     const {things} = this.props;
-    const key = d && d.format('YYYYMMDD');
+    const key = d && DateUtil.formatForStore(d);
     const day = days[key] || {};
     const {doneThings} = day;
 

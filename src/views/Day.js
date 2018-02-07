@@ -6,6 +6,7 @@ import {Actions} from 'react-native-router-flux';
 import Container from 'components/Container';
 import DoneThings from 'components/DoneThings';
 import {addDoneThing, removeDoneThing} from 'actions/days';
+import DateUtil from 'utils/DateUtil';
 
 class AddDoneThingForm extends Component {
   static defaultProps = {
@@ -99,7 +100,7 @@ class DayView extends Component {
 
 function mapStateToProps(state, ownProps) {
   const {days, things} = state;
-  const date = ownProps.day.format('YYYYMMDD');
+  const date = DateUtil.formatForStore(ownProps.day);
   const day = days[date] || {
     date,
     doneThings: []

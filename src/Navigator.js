@@ -6,6 +6,7 @@ import NavBar from 'components/NavBar';
 import Calendar from 'views/Calendar';
 import Day from 'views/Day';
 import Things from 'views/Things';
+import Thing from 'views/Thing';
 
 const Navigator = () => (
   <Router>
@@ -33,6 +34,7 @@ const Navigator = () => (
           left='Calendar'
           onPressLeft={() => Actions.pop()}
           />
+        <Scene key="thing" title="Thing" component={Thing} onLeft={Actions.pop} />
       </Stack>
     </Stack>
   </Router>
