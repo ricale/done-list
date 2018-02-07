@@ -7,6 +7,11 @@ const actions = createActions({
       SUCCESS: (result) => (result),
       FAILURE: () => ({}),
     },
+
+    UPDATE: {
+      SUCCESS: (result) => ({thingData: result}),
+      FAILURE: () => ({}),
+    },
   }
 });
 
@@ -19,5 +24,20 @@ export const getThings = () => {
       }, {});
       dispatch(actions.things.fetch.success(result));
     })
+  }
+}
+
+export const updateThing = (thing) => {
+  return dispatch => {
+    const d = {key: 'things', id: thing.id, data: thing};
+    return Storage.set(d).then(() => {
+      dispatch(actions.things.update.success(thing));
+    });
+  }
+}
+
+export const removeDates = () => {
+  return dispatch => {
+
   }
 }

@@ -74,7 +74,7 @@ const getIdForNewThing = () => {
         ...result.map(r => r.id)
       ) + 1)
   )
-}
+};
 
 const saveThing = (thing, date) => {
   const dates = (thing.dates || []).concat(date).sort((a,b) => a - b);
@@ -85,7 +85,7 @@ const saveThing = (thing, date) => {
     data: thingData
   });
   return thingData;
-}
+};
 
 const saveDay = (day, thingId) => {
   const yearmonth = day.date.slice(0, 6);
@@ -97,7 +97,7 @@ const saveDay = (day, thingId) => {
     data: dayData
   });
   return dayData;
-}
+};
 
 export const addDoneThing = (day, thing) => {
   return dispatch => {
@@ -125,7 +125,7 @@ const spliceArray = (array, item) => {
   const itemIndex = result.indexOf(item);
   result.splice(itemIndex, 1);
   return result;
-}
+};
 
 export const removeDoneThing = (date, thingName, {doneThings, thingDates}) => {
   return dispatch => {
