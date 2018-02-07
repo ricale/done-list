@@ -4,9 +4,9 @@ import {View, Platform, TouchableOpacity, Text,} from 'react-native';''
 export default class NavBar extends Component {
   static defaultProps = {
     style: {
-      height: (Platform.OS === 'ios') ? 64 : 54,
+      height: (Platform.OS === 'ios') ? 64 : 44,
       flexDirection: 'row',
-      paddingTop: 20,
+      paddingTop: (Platform.OS === 'ios') ? 20 : 0,
       backgroundColor: 'white'
     },
     itemStyle: {
