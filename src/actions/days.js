@@ -127,21 +127,21 @@ const spliceArray = (array, item) => {
   return result;
 };
 
-export const removeDoneThing = (date, thingName, {doneThings, thingDates}) => {
+export const removeDoneThing = (day, thing) => {
   return dispatch => {
-    const yearmonth = date.slice(0, 6);
-    const day = date.slice(6);
-    const dayData = Scheme.Day(date, spliceArray(doneThings, thingName));
+    const yearmonth = day.date.slice(0, 6);
+    const dayOfMonth = day.date.slice(6);
+    const dayData = Scheme.Day(day.date, spliceArray(day.doneThings, thing.id));
     Storage.set({
       key:  yearmonth,
-      id:   day,
+      id:   dayOfMonth,
       data: dayData
     });
 
-    const thingData = Scheme.Thing(thingName, spliceArray(thingDates, date));
+    const thingData = Scheme.Thing(thing.name, spliceArray(thing.dates, day.date));
     Storage.set({
       key:  'things',
-      id:   thingName,
+      id:   thing.name,
       data: thingData
     });
 

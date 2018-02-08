@@ -64,10 +64,10 @@ class DayView extends Component {
     this.setState({name: ''});
   }
 
-  handlePressRemove = (thingName) => {
-    const {day, things, removeDoneThing} = this.props;
+  handlePressRemove = (thing) => {
+    const {day, removeDoneThing} = this.props;
 
-    removeDoneThing(day, things[thingName]);
+    removeDoneThing(day, thing);
   }
 
   getDoneThings() {
