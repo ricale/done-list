@@ -138,10 +138,10 @@ export const removeDoneThing = (day, thing) => {
       data: dayData
     });
 
-    const thingData = Scheme.Thing(thing.name, spliceArray(thing.dates, day.date));
+    const thingData = Scheme.Thing(thing.id, thing.name, spliceArray(thing.dates, day.date));
     Storage.set({
       key:  'things',
-      id:   thing.name,
+      id:   thing.id,
       data: thingData
     });
 
