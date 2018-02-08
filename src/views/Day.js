@@ -36,11 +36,11 @@ class AddDoneThingForm extends Component {
   }
 
   render() {
-    const {inputStyle} = this.props;
+    const {inputStyle, style} = this.props;
     const {name} = this.state;
 
     return (
-      <View>
+      <View style={style}>
         <TextInput
           style={inputStyle}
           value={name}
@@ -81,18 +81,20 @@ class DayView extends Component {
 
     return (
       <Container>
-        <Text style={{width: '100%'}}>{day.date}</Text>
+        <View style={{flexDirection: 'row', marginTop: 1}}>
+          <DoneThings
+            doneThings={this.getDoneThings()}
+            allThings={things}
+            onPressRemove={this.handlePressRemove}
+            fontSize={20}
+            style={{flex: 1}}
+            />
 
-        <AddDoneThingForm
-          onPressButton={this.handlePressAdd}
-          />
-
-        <DoneThings
-          doneThings={this.getDoneThings()}
-          allThings={things}
-          onPressRemove={this.handlePressRemove}
-          fontSize={20}
-          />
+          <AddDoneThingForm
+            onPressButton={this.handlePressAdd}
+            style={{flex: 2}}
+            />
+          </View>
       </Container>
     );
   }

@@ -23,7 +23,12 @@ const Navigator = () => (
           onPressLeft={() => Actions.things()}
           onPressRight={() => Actions.config()}
           />
-        <Scene key="day" title="Day" component={Day} onLeft={Actions.pop} />
+        <Scene
+          key="day"
+          title='day'
+          component={Day}
+          onLeft={Actions.pop}
+          />
       </Stack>
 
       <Stack key="things">
@@ -37,7 +42,12 @@ const Navigator = () => (
           onPressLeft={() => Actions.pop()}
           onPressRight={() => Actions.config()}
           />
-        <Scene key="thing" title="Thing" component={Thing} onLeft={Actions.pop} />
+        <Scene
+          key="thing"
+          title="Thing"
+          component={Thing}
+          onLeft={Actions.pop}
+          />
       </Stack>
 
       <Stack key="config">
@@ -50,7 +60,6 @@ const Navigator = () => (
           left='Calendar'
           onPressLeft={() => Actions.pop()}
           />
-        <Scene key="thing" title="Thing" component={Thing} onLeft={Actions.pop} />
       </Stack>
     </Stack>
   </Router>

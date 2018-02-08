@@ -44,7 +44,7 @@ export default class NavBar extends Component {
             <TouchableOpacity
               onPress={onPressRight}
               style={{paddingRight: 10}}>
-              <Text style={{color: '#017afe'}}>Config</Text>
+              <Text style={{color: '#017afe'}}>Conf</Text>
             </TouchableOpacity>
           }
         </View>

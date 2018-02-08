@@ -8,6 +8,7 @@ import Calendar from 'components/Calendar';
 import {getDays} from 'actions/days';
 import {getThings} from 'actions/things';
 import Storage from 'utils/Storage';
+import DateUtil from 'utils/DateUtil';
 
 class CalendarView extends Component {
   componentWillMount() {
@@ -23,7 +24,7 @@ class CalendarView extends Component {
       <Container>
         {days && things &&
           <Calendar
-            onPressDay={(day) => Actions.day({day})}
+            onPressDay={(day) => Actions.day({day, title: DateUtil.formatForDisplay(day)})}
             days={days}
             things={things || []} />
         }

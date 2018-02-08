@@ -20,7 +20,7 @@ const Thing = (props) => {
   } = props;
 
   return (
-    <TouchableOpacity style={style} onPress={() => Actions.thing({id})}>
+    <TouchableOpacity style={style} onPress={() => Actions.thing({id, title: name})}>
       <Text style={[nameStyle, {backgroundColor: defaultColors[id % defaultColors.length]}]}>
         {name}
       </Text>
