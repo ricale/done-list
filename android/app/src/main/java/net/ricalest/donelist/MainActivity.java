@@ -1,4 +1,4 @@
-package com.donelist;
+package net.ricalest.donelist;
 
 import com.facebook.react.ReactActivity;
 
