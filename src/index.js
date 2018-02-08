@@ -7,17 +7,15 @@ import thunkMiddleware from 'redux-thunk';
 import rootReducer from 'reducers';
 import Navigator from './Navigator';
 
-const middleware = (e =>
-  applyMiddleware(
-    thunkMiddleware,
-    (e !== 'production' ? logger : undefined)
-  )
-)(process.env.NODE_ENV);
+const middlewares = [thunkMiddleware];
+(e !== 'production') && middlewares.push(logger);
+
+const appliedMiddleware = applyMiddleware(...middlewares);
 
 const store = createStore(
   rootReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  middleware
+  appliedMiddleware
 );
 
 const DoneListApp = (props) => (
