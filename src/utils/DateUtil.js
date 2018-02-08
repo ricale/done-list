@@ -49,10 +49,27 @@ function formatForDisplay(m, o = {}) {
   return formatted;
 }
 
+function isSunday(m) {
+  if(typeof m === 'string') {
+    m = moment(m, 'YYYYMMDD');
+  }
+
+  return m.isoWeekday() === 7;
+}
+
+function isSaturday(m) {
+  if(typeof m === 'string') {
+    m = moment(m, 'YYYYMMDD');
+  }
+
+  return m.isoWeekday() === 6;
+}
+
 export default {
-  getRecentDates,
   getRecentDatesBeginWithMon,
   getRecentDatesBeginWithMonOrThu,
   formatForStore,
-  formatForDisplay
+  formatForDisplay,
+  isSunday,
+  isSaturday
 };
