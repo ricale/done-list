@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
 
 import Container from 'components/Container';
+import Button from 'components/Button';
 import {clearAll} from 'actions/days';
 import Storage from 'utils/Storage';
 
@@ -29,9 +30,9 @@ class Setting extends Component {
     const {clearButtonStyle} = this.props;
     return (
       <Container>
-        <TouchableOpacity onPress={this.handlePressClear} style={clearButtonStyle}>
+        <Button onPress={this.handlePressClear} style={clearButtonStyle}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>초기화</Text>
-        </TouchableOpacity>
+        </Button>
       </Container>
     );
   }
