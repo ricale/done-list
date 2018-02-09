@@ -1,13 +1,22 @@
 import React, {Component} from 'react';
+import {TouchableOpacity} from 'react-native';
 import {Router, Stack, Scene, Actions} from 'react-native-router-flux';
 
-import NavBar from 'components/NavBar';
+import Icon from 'components/Icon';
 
 import Calendar from 'views/Calendar';
 import Day from 'views/Day';
 import Things from 'views/Things';
 import Thing from 'views/Thing';
 import Setting from 'views/Setting';
+
+const Button = ({onPress, iconName}) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={{padding: 10}}>
+    <Icon name={iconName} color='#017afe' />
+  </TouchableOpacity>
+);
 
 const Navigator = () => (
   <Router>
@@ -18,47 +27,35 @@ const Navigator = () => (
           title="Calendar"
           component={Calendar}
 
-          navBar={NavBar}
-          left='Things'
-          onPressLeft={() => Actions.things()}
-          onPressRight={() => Actions.config()}
+          renderLeftButton={<Button onPress={() => Actions.things()} iconName='bars' />}
+          renderRightButton={<Button onPress={() => Actions.config()} iconName='cog' />}
           />
         <Scene
           key="day"
           title='day'
           component={Day}
-          onLeft={Actions.pop}
+          back
           />
       </Stack>
 
-      <Stack key="things">
+      <Stack key="things" back>
         <Scene
           key="thingList"
           title="Things"
           component={Things}
-
-          navBar={NavBar}
-          left='Calendar'
-          onPressLeft={() => Actions.pop()}
-          onPressRight={() => Actions.config()}
           />
         <Scene
           key="thing"
           title="Thing"
           component={Thing}
-          onLeft={Actions.pop}
           />
       </Stack>
 
-      <Stack key="config">
+      <Stack key="config" back>
         <Scene
           key="settings"
           title="Settings"
           component={Setting}
-
-          navBar={NavBar}
-          left='Calendar'
-          onPressLeft={() => Actions.pop()}
           />
       </Stack>
     </Stack>
