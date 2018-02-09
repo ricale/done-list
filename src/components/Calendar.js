@@ -19,7 +19,7 @@ const dayStyle = {
   },
   enabled: {},
   disabled: {
-    opacity: 0.3
+    opacity: 0.5
   }
 };
 
@@ -83,25 +83,22 @@ class Day extends Component {
     const onPress = this.isValid() ? this.handlePress : undefined;
 
     return (
-      <TouchableOpacity style={this.getStyle()} onPress={onPress}>
+      <View style={this.getStyle()}>
         {!!d &&
-          <View>
+          <TouchableOpacity style={{flex: 1}} onPress={onPress}>
             <Text style={this.getTextStyle()}>
               {d.format('D')}
             </Text>
             <DoneThings doneThings={doneThings} />
-          </View>
+          </TouchableOpacity>
         }
-      </TouchableOpacity>
+      </View>
     )
   }
 };
 
 export default class Calendar extends Component {
   static defaultProps = {
-    lastDate: moment(),
-    period: 14,
-
     style: {
       display: 'flex',
       flex: 1,
@@ -121,18 +118,41 @@ export default class Calendar extends Component {
     },
   };
 
-  getDates() {
-    const {lastDate, period} = this.props;
-    const dates = DateUtil.getCurrentWeeks(lastDate);
-    const result = dates.reduce((result, current) => {
+  constructor(props) {
+    super(props);
+
+    const lastDate = props.initialLastDate || moment();
+    this.state = {
+      lastDate,
+      dates: DateUtil.getCurrentWeeks(lastDate)
+    };
+  }
+
+  handlePressLeft = () => {
+    const lastDate = this.state.dates[0].subtract(1, 'days');
+    this.setState({
+      lastDate,
+      dates: DateUtil.getCurrentWeeks(lastDate)
+    });
+  }
+
+  handlePressRight = () => {
+    const {dates} = this.state;
+    const lastDate = dates[dates.length - 1].add(14, 'days');
+    this.setState({
+      lastDate,
+      dates: DateUtil.getCurrentWeeks(lastDate)
+    });
+  }
+
+  getDatesForDisplay() {
+    return this.state.dates.reduce((result, current) => {
       result.push(current);
       if(current.isoWeekday() === 3) {
         result.push(undefined)
       }
       return result;
     }, []);
-
-    return result;
   }
 
   getDoneThings(days, d) {
@@ -145,24 +165,32 @@ export default class Calendar extends Component {
   }
 
   render() {
-    const {style, daysStyle, controllerStyle, onPressDay, days, things} = this.props;
+    const {
+      days,
+      things,
+      onPressDay,
 
-    const dates = this.getDates();
+      style,
+      controllerStyle,
+      daysStyle,
+    } = this.props;
+
+    const {dates} = this.state;
 
     return (
       <View style={style}>
         <View style={controllerStyle}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.handlePressLeft}>
             <Text>⬅</Text>
           </TouchableOpacity>
           <Text>{`${DateUtil.formatForDisplay(dates[0])} ~ ${DateUtil.formatForDisplay(dates[dates.length - 1])}`}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.handlePressRight}>
             <Text>➡</Text>
           </TouchableOpacity>
         </View>
 
         <View style={daysStyle}>
-          {dates.map((d,i) =>
+          {this.getDatesForDisplay().map((d,i) =>
             <Day
               key={i}
               d={d}
