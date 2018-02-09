@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, Text, Button, TextInput, TouchableOpacity} from 'react-native';
+import {View, Text} from 'react-native';
 
 import Container from 'components/Container';
 import ThingDates from 'components/ThingDates';
+import TextButton from 'components/TextButton';
+import Input from 'components/Input';
+import Button from 'components/Button';
 import DateUtil from 'utils/DateUtil';
 import {updateThing} from 'actions/things';
 
@@ -24,18 +27,20 @@ class UpdateThingForm extends Component {
   }
 
   render() {
-    const {name, onPress} = this.state;
+    const {style} = this.props;
+    const {name} = this.state;
 
     return (
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <TextInput
+      <View style={[{padding: 1}, style]}>
+        <Input
           value={name || ''}
-          style={{borderWidth: 1, width: 200}}
           onChangeText={this.handleChangeName}
+          style={{marginBottom: 2}}
           />
-        <Button
-          title='수정'
+
+        <TextButton
           onPress={this.handlePress}
+          text='이름 수정'
           />
       </View>
     );
@@ -53,15 +58,18 @@ class ThingView extends Component {
 
     return (
       <Container>
-        <UpdateThingForm
-          name={name}
-          onPress={this.handlePressUpdate}
-          />
-          
-        <ThingDates
-          dates={dates}
-          dateStyle={{flexDirection: 'row', alignItems: 'center'}}
-          />
+        <View style={{flexDirection: 'row', marginTop: 1}}>
+          <ThingDates
+            dates={dates}
+            style={{flex: 2}}
+            />
+
+          <UpdateThingForm
+            name={name}
+            onPress={this.handlePressUpdate}
+            style={{flex: 3}}
+            />
+        </View>
       </Container>
     );
   }

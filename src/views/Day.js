@@ -1,22 +1,16 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, TextInput, Button, Text} from 'react-native';
+import {View, TextInput} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 import Container from 'components/Container';
 import DoneThings from 'components/DoneThings';
+import TextButton from 'components/TextButton';
+import Input from 'components/Input';
 import {addDoneThing, removeDoneThing} from 'actions/days';
 import DateUtil from 'utils/DateUtil';
 
 class AddDoneThingForm extends Component {
-  static defaultProps = {
-    inputStyle: {
-      margin: 1,
-      borderWidth: 1,
-      borderColor: 'gray'
-    }
-  };
-
   constructor(props) {
     super(props);
     this.state = {};
@@ -36,19 +30,20 @@ class AddDoneThingForm extends Component {
   }
 
   render() {
-    const {inputStyle, style} = this.props;
+    const {style} = this.props;
     const {name} = this.state;
 
     return (
       <View style={style}>
-        <TextInput
-          style={inputStyle}
+        <Input
           value={name}
           onChangeText={this.handleChangeDoneThingName}
+          style={{marginBottom: 2}}
           />
-        <Button
-          title='Add'
+
+        <TextButton
           onPress={this.handlePressAdd}
+          text='추가'
           />
       </View>
     )
@@ -87,12 +82,12 @@ class DayView extends Component {
             allThings={things}
             onPressRemove={this.handlePressRemove}
             fontSize={20}
-            style={{flex: 1}}
+            style={{flex: 2}}
             />
 
           <AddDoneThingForm
             onPressButton={this.handlePressAdd}
-            style={{flex: 2}}
+            style={{flex: 3, padding: 1}}
             />
           </View>
       </Container>

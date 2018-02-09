@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {TouchableOpacity} from 'react-native';
 import {Router, Stack, Scene, Actions} from 'react-native-router-flux';
 
-import Icon from 'components/Icon';
+import IconButton from 'components/IconButton';
 
 import Calendar from 'views/Calendar';
 import Day from 'views/Day';
@@ -10,12 +9,8 @@ import Things from 'views/Things';
 import Thing from 'views/Thing';
 import Setting from 'views/Setting';
 
-const Button = ({onPress, iconName}) => (
-  <TouchableOpacity
-    onPress={onPress}
-    style={{padding: 10}}>
-    <Icon name={iconName} color='#017afe' />
-  </TouchableOpacity>
+const NavBarButton = ({...args, onPress, iconName}) => (
+  <IconButton {...args} color='#017afe' />
 );
 
 const Navigator = () => (
@@ -27,8 +22,8 @@ const Navigator = () => (
           title="Calendar"
           component={Calendar}
 
-          renderLeftButton={<Button onPress={() => Actions.things()} iconName='bars' />}
-          renderRightButton={<Button onPress={() => Actions.config()} iconName='cog' />}
+          renderLeftButton={<NavBarButton onPress={() => Actions.things()} iconName='bars' />}
+          renderRightButton={<NavBarButton onPress={() => Actions.config()} iconName='cog' />}
           />
         <Scene
           key="day"

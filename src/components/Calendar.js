@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
 import DoneThings from 'components/DoneThings';
-import Icon from 'components/Icon';
+import IconButton from 'components/IconButton';
 import DateUtil from 'utils/DateUtil';
 
 const dayStyle = {
@@ -198,13 +198,9 @@ export default class Calendar extends Component {
     return (
       <View style={style}>
         <View style={controllerStyle}>
-          <TouchableOpacity style={{padding: 10}} onPress={this.handlePressLeft}>
-            <Icon name='arrow-left' />
-          </TouchableOpacity>
+          <IconButton iconName='arrow-left' onPress={this.handlePressLeft} />
           <Text>{`${DateUtil.formatForDisplay(dates[0])} ~ ${DateUtil.formatForDisplay(dates[dates.length - 1])}`}</Text>
-          <TouchableOpacity style={{padding: 10}} onPress={this.handlePressRight} disabled={this.canGoNextPage()}>
-            <Icon name='arrow-right' />
-          </TouchableOpacity>
+          <IconButton iconName='arrow-right' onPress={this.handlePressRight} />
         </View>
 
         <View style={daysStyle}>

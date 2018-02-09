@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text} from 'react-native';
 
 import {colors as defaultColors} from 'constants/colors';
+import IconButton from 'components/IconButton';
 
 const s = {
   container: {
@@ -68,9 +69,11 @@ class DoneThings extends Component {
           <View key={i} style={_thingStyle}>
             <Text style={this.getThingNameStyle(thing)}>{thing.name}</Text>
             {onPressRemove &&
-              <TouchableOpacity style={_removeButtonStyle} onPress={() => onPressRemove(thing)}>
-                <Text style={{fontSize: fontSize - 4}}>⨉</Text>
-              </TouchableOpacity>
+              <IconButton
+                iconName='times'
+                onPress={() => onPressRemove(thing)}
+                style={{padding: 5}}
+                />
             }
           </View>
         )}

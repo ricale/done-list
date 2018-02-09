@@ -12,19 +12,17 @@ export default class ThingDates extends Component {
   }
 
   render() {
-    const {dates, dateStyle, onPressDelete, ...attrs} = this.props;
+    const {dates, onPressDelete, ...attrs} = this.props;
 
     return (
       <View {...attrs}>
         {(dates || []).map((d,i) =>
           <View key={i} >
-            <Text style={[dateStyle, this.getWeekdayColorStyle(d)]}>
+            <Text style={[{flexDirection: 'row', alignItems: 'center'}, this.getWeekdayColorStyle(d)]}>
               {DateUtil.formatForDisplay(d, {weekday: true})}
             </Text>
             {!!onPressDelete &&
-              <TouchableOpacity onPress={onPressDelete}>
-                <Text>삭제</Text>
-              </TouchableOpacity>
+              <IconButton iconName='trash-alt' onPress={onPressDelete}/>
             }
           </View>
         )}
