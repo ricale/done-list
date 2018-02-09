@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 
 import Container from 'components/Container';
+import {clearAll} from 'actions/days';
 import Storage from 'utils/Storage';
 
-export default class Setting extends Component {
+class Setting extends Component {
   static defaultProps = {
     clearButtonStyle: {
       backgroundColor: 'red',
@@ -14,7 +16,13 @@ export default class Setting extends Component {
   };
 
   handlePressClear = () => {
-    Storage.clear()
+    this.props.clearAll();
+    Alert.alert(
+      '삭제가 완료되었습니다.',
+      '',
+      [{text: 'OK'},],
+      {cancelable: false}
+    );
   }
 
   render() {
@@ -28,3 +36,16 @@ export default class Setting extends Component {
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  return ownProps;
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    clearAll: (...args) =>
+      dispatch(clearAll(...args)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Setting);

@@ -4,7 +4,6 @@ import DateUtil from 'utils/DateUtil';
 import Scheme from 'scheme';
 
 const actions = createActions({
-
   DAYS: {
     FETCH: {
       SUCCESS: (result) => (result),
@@ -19,22 +18,11 @@ const actions = createActions({
     REMOVE_DONE_THING: {
       SUCCESS: (dayData, thingData) => ({dayData, thingData}),
       FAILURE: () => ({}),
+    },
+
+    CLEAR: {
+      SUCCESS: () => ({}),
     }
-
-    // CREATE: {
-    //   SUCCESS: () => ({}),
-    //   FAILURE: () => ({}),
-    // },
-
-    // UPDATE: {
-    //   SUCCESS: () => ({}),
-    //   FAILURE: () => ({}),
-    // },
-
-    // DELETE: {
-    //   SUCCESS: (result) => ({result}),
-    //   FAILURE: () => ({}),
-    // }
   }
 });
 
@@ -148,5 +136,12 @@ export const removeDoneThing = (day, thing) => {
     return dispatch(
       actions.days.removeDoneThing.success(dayData, thingData)
     );
+  }
+}
+
+export const clearAll = () => {
+  return dispatch => {
+    Storage.clear();
+    dispatch(actions.days.clear.success());
   }
 }
