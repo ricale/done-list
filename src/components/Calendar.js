@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
-import DateUtil from 'utils/DateUtil';
 import DoneThings from 'components/DoneThings';
+import Icon from 'components/Icon';
+import DateUtil from 'utils/DateUtil';
 
 const dayStyle = {
   base: {
@@ -107,7 +108,8 @@ export default class Calendar extends Component {
     controllerStyle: {
       display: 'flex',
       flexDirection: 'row',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      alignItems: 'center'
     },
 
     daysStyle: {
@@ -133,7 +135,7 @@ export default class Calendar extends Component {
   }
 
   handlePressLeft = () => {
-    const lastDate = this.state.dates[0].subtract(1, 'days');
+    const lastDate = this.state.dates[0].clone().subtract(1, 'days');
     this.setState({
       lastDate,
       dates: DateUtil.getCurrentWeeks(lastDate)
@@ -142,7 +144,7 @@ export default class Calendar extends Component {
 
   handlePressRight = () => {
     const {dates} = this.state;
-    const lastDate = dates[dates.length - 1].add(14, 'days');
+    const lastDate = dates[dates.length - 1].clone().add(14, 'days');
     this.setState({
       lastDate,
       dates: DateUtil.getCurrentWeeks(lastDate)
@@ -157,7 +159,7 @@ export default class Calendar extends Component {
 
   canGoNextPage() {
     const {dates} = this.state;
-    const nextDate = dates[dates.length - 1].add(1, 'days');
+    const nextDate = dates[dates.length - 1].clone().add(1, 'days');
     return DateUtil.isFuture(nextDate);
   }
 
@@ -193,18 +195,15 @@ export default class Calendar extends Component {
 
     const {dates} = this.state;
 
-    console.log('days', days);
-    console.log('things', things)
-
     return (
       <View style={style}>
         <View style={controllerStyle}>
-          <TouchableOpacity onPress={this.handlePressLeft}>
-            <Text>⬅</Text>
+          <TouchableOpacity style={{padding: 10}} onPress={this.handlePressLeft}>
+            <Icon name='arrow-left' />
           </TouchableOpacity>
           <Text>{`${DateUtil.formatForDisplay(dates[0])} ~ ${DateUtil.formatForDisplay(dates[dates.length - 1])}`}</Text>
-          <TouchableOpacity onPress={this.handlePressRight} disabled={this.canGoNextPage()}>
-            <Text>➡</Text>
+          <TouchableOpacity style={{padding: 10}} onPress={this.handlePressRight} disabled={this.canGoNextPage()}>
+            <Icon name='arrow-right' />
           </TouchableOpacity>
         </View>
 
