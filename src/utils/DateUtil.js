@@ -28,6 +28,17 @@ function getRecentDatesBeginWithMonOrThu(lastDate = moment(), period = 14 /* day
   ).concat(result);
 }
 
+function getCurrentWeeks(date = moment(), weeks = 2) {
+  const weekday = date.isoWeekday();
+  const d = (weekday < 3               ) ? (3 - weekday) :
+            (weekday > 3 && weekday < 7) ? (7 - weekday) :
+                                           0;
+
+  const lastDate = date.clone().add(d, 'days');
+
+  return getRecentDates(lastDate, weeks * 7);
+}
+
 function formatForStore(m) {
   return m.format('YYYYMMDD');
 }
@@ -65,11 +76,17 @@ function isSaturday(m) {
   return m.isoWeekday() === 6;
 }
 
+function isFuture(m) {
+  return Math.round(m.diff(moment(), 'days', true)) > 0;
+}
+
 export default {
   getRecentDatesBeginWithMon,
   getRecentDatesBeginWithMonOrThu,
+  getCurrentWeeks,
   formatForStore,
   formatForDisplay,
   isSunday,
-  isSaturday
+  isSaturday,
+  isFuture
 };
