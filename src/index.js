@@ -8,7 +8,9 @@ import rootReducer from 'reducers';
 import Navigator from './Navigator';
 
 const middlewares = [thunkMiddleware];
-(e !== 'production') && middlewares.push(logger);
+if(process.env.NODE_ENV !== 'production') {
+  middlewares.push(logger);
+}
 
 const appliedMiddleware = applyMiddleware(...middlewares);
 

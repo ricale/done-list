@@ -11,23 +11,29 @@ import Storage from 'utils/Storage';
 import DateUtil from 'utils/DateUtil';
 
 class CalendarView extends Component {
-  componentWillMount() {
-    // FIXME: things 로딩 후 days 로딩
-    this.props.getThings().then(() =>
-      this.props.getDays(moment().subtract(14, 'days'), moment())
+  handlePressDay = (day) => {
+    Actions.day({day, title: DateUtil.formatForDisplay(day)});
+  }
+
+  handleChangePeriod = (beginDate, lastDate) => {
+    const {getThings, getDays} = this.props;
+    getThings().then(() =>
+      getDays(beginDate, lastDate)
     );
   }
 
   render() {
     const {days, things} = this.props;
+
     return (
       <Container>
-        {days && things &&
-          <Calendar
-            onPressDay={(day) => Actions.day({day, title: DateUtil.formatForDisplay(day)})}
-            days={days}
-            things={things || []} />
-        }
+        <Calendar
+          onPressDay={this.handlePressDay}
+          onChangePeriod={this.handleChangePeriod}
+          initialLastDate={moment()}
+          days={days}
+          things={things || []}
+          />
       </Container>
     );
   }

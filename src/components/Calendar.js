@@ -5,61 +5,112 @@ import moment from 'moment';
 import DateUtil from 'utils/DateUtil';
 import DoneThings from 'components/DoneThings';
 
-const Day = (props) => {
-  const {
-    style,
-    textStyle,
-    emptyStyle,
-    d,
-    onPress,
-    doneThings,
-    things
-  } = props;
-
-  if(!d) {
-    return (
-      <View style={emptyStyle}></View>
-    )
-  }
-
-  return (
-    <TouchableOpacity style={style} onPress={() => onPress(d)}>
-      <Text style={textStyle(d)}>{d.format('D')}</Text>
-      <DoneThings doneThings={doneThings} />
-    </TouchableOpacity>
-  )
-};
-
-Day.defaultProps = {
-  style: {
+const dayStyle = {
+  base: {
     width: '25%',
     height: '25%',
+  },
+  empty: {},
+  existed: {
     borderWidth: 1,
     padding: 1,
-
     borderColor: 'white',
     backgroundColor: '#EFEFEF',
   },
-  textStyle: (d) => ({
+  enabled: {},
+  disabled: {
+    opacity: 0.5
+  }
+};
+
+const dayTextStyle = {
+  base: {
     width: '100%',
     textAlign: 'right',
-    color: d.isoWeekday() === 6 ? 'blue' :
-      d.isoWeekday() === 7 ? 'red' :
-      'black'
-  }),
-  emptyStyle: {
-    width: '25%',
-    height: '25%',
-    borderWidth: 0
+  },
+  workday:  { color: 'black'},
+  sat:      { color: 'blue'},
+  sun:      { color: 'red'},
+  disabled: { color: 'gray'}
+};
+
+class Day extends Component {
+  handlePress = () => {
+    const {onPress, d} = this.props;
+    onPress(d);
   }
-}
+
+  isValid() {
+    const {d} = this.props;
+    return !!d && !DateUtil.isFuture(d)
+  }
+
+  getStyle() {
+    const {d} = this.props;
+    const {base, empty, existed, enabled, disabled} = dayStyle;
+
+    return {
+      ...base,
+      ...(
+        !d                   ? ({...empty}) :
+        DateUtil.isFuture(d) ? ({...existed, ...disabled}) :
+                               ({...existed, ...enabled})
+      )
+    };
+  }
+
+  getTextStyle() {
+    const {d} = this.props;
+    const {base, workday, sat, sun, disabled} = dayTextStyle;
+
+    return {
+      ...base,
+      ...(
+        DateUtil.isSunday(d)   ? ({...sun}) :
+        DateUtil.isSaturday(d) ? ({...sat}) :
+                                 ({...workday})
+      )
+    }
+  }
+
+  render() {
+    const {
+      d,
+      doneThings,
+      things
+    } = this.props;
+
+    const onPress = this.isValid() ? this.handlePress : undefined;
+
+    return (
+      <View style={this.getStyle()}>
+        {!!d &&
+          <TouchableOpacity style={{flex: 1}} onPress={onPress}>
+            <Text style={this.getTextStyle()}>
+              {d.format('D')}
+            </Text>
+            <DoneThings doneThings={doneThings} />
+          </TouchableOpacity>
+        }
+      </View>
+    )
+  }
+};
 
 export default class Calendar extends Component {
   static defaultProps = {
-    lastDate: moment(),
-    period: 14,
-
     style: {
+      display: 'flex',
+      flex: 1,
+    },
+
+    controllerStyle: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
+
+    daysStyle: {
       display: 'flex',
       flexDirection: 'row',
       flexWrap: 'wrap',
@@ -67,18 +118,57 @@ export default class Calendar extends Component {
     },
   };
 
-  getDates() {
-    const {lastDate, period} = this.props;
-    const dates = DateUtil.getRecentDatesBeginWithMonOrThu(lastDate, 11);
-    const result = dates.reduce((result, current) => {
+  constructor(props) {
+    super(props);
+
+    const lastDate = props.initialLastDate || moment();
+    this.state = {
+      lastDate,
+      dates: DateUtil.getCurrentWeeks(lastDate)
+    };
+  }
+
+  componentWillMount() {
+    this.loadData();
+  }
+
+  handlePressLeft = () => {
+    const lastDate = this.state.dates[0].subtract(1, 'days');
+    this.setState({
+      lastDate,
+      dates: DateUtil.getCurrentWeeks(lastDate)
+    }, () => this.loadData());
+  }
+
+  handlePressRight = () => {
+    const {dates} = this.state;
+    const lastDate = dates[dates.length - 1].add(14, 'days');
+    this.setState({
+      lastDate,
+      dates: DateUtil.getCurrentWeeks(lastDate)
+    }, () => this.loadData());
+  }
+
+  loadData() {
+    const {onChangePeriod} = this.props;
+    const {dates} = this.state;
+    onChangePeriod(dates[0], dates[dates.length - 1]);
+  }
+
+  canGoNextPage() {
+    const {dates} = this.state;
+    const nextDate = dates[dates.length - 1].add(1, 'days');
+    return DateUtil.isFuture(nextDate);
+  }
+
+  getDatesForDisplay() {
+    return this.state.dates.reduce((result, current) => {
       result.push(current);
       if(current.isoWeekday() === 3) {
         result.push(undefined)
       }
       return result;
     }, []);
-
-    return result;
   }
 
   getDoneThings(days, d) {
@@ -91,18 +181,43 @@ export default class Calendar extends Component {
   }
 
   render() {
-    const {style, onPressDay, days, things} = this.props;
+    const {
+      days,
+      things,
+      onPressDay,
+
+      style,
+      controllerStyle,
+      daysStyle,
+    } = this.props;
+
+    const {dates} = this.state;
+
+    console.log('days', days);
+    console.log('things', things)
 
     return (
       <View style={style}>
-        {!!things && this.getDates().map((d,i) =>
-          <Day
-            key={i}
-            d={d}
-            doneThings={this.getDoneThings(days, d)}
-            onPress={onPressDay}
-            />
-        )}
+        <View style={controllerStyle}>
+          <TouchableOpacity onPress={this.handlePressLeft}>
+            <Text>⬅</Text>
+          </TouchableOpacity>
+          <Text>{`${DateUtil.formatForDisplay(dates[0])} ~ ${DateUtil.formatForDisplay(dates[dates.length - 1])}`}</Text>
+          <TouchableOpacity onPress={this.handlePressRight} disabled={this.canGoNextPage()}>
+            <Text>➡</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={daysStyle}>
+          {this.getDatesForDisplay().map((d,i) =>
+            <Day
+              key={i}
+              d={d}
+              doneThings={this.getDoneThings(days, d)}
+              onPress={onPressDay}
+              />
+          )}
+        </View>
       </View>
     )
   }
