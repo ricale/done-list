@@ -10,6 +10,9 @@ export default function days(state = initialState, action) {
     case 'DAYS/REMOVE_DONE_THING/SUCCESS':
       const {dayData} = action.payload;
       return {...state, [dayData.date]: dayData};
+
+    case 'DAYS/CLEAR/SUCCESS':
+      return {};
   }
 
   return state;
