@@ -128,12 +128,16 @@ export default class Calendar extends Component {
     };
   }
 
+  componentWillMount() {
+    this.loadData();
+  }
+
   handlePressLeft = () => {
     const lastDate = this.state.dates[0].subtract(1, 'days');
     this.setState({
       lastDate,
       dates: DateUtil.getCurrentWeeks(lastDate)
-    });
+    }, () => this.loadData());
   }
 
   handlePressRight = () => {
@@ -142,7 +146,19 @@ export default class Calendar extends Component {
     this.setState({
       lastDate,
       dates: DateUtil.getCurrentWeeks(lastDate)
-    });
+    }, () => this.loadData());
+  }
+
+  loadData() {
+    const {onChangePeriod} = this.props;
+    const {dates} = this.state;
+    onChangePeriod(dates[0], dates[dates.length - 1]);
+  }
+
+  canGoNextPage() {
+    const {dates} = this.state;
+    const nextDate = dates[dates.length - 1].add(1, 'days');
+    return DateUtil.isFuture(nextDate);
   }
 
   getDatesForDisplay() {
@@ -177,6 +193,9 @@ export default class Calendar extends Component {
 
     const {dates} = this.state;
 
+    console.log('days', days);
+    console.log('things', things)
+
     return (
       <View style={style}>
         <View style={controllerStyle}>
@@ -184,7 +203,7 @@ export default class Calendar extends Component {
             <Text>⬅</Text>
           </TouchableOpacity>
           <Text>{`${DateUtil.formatForDisplay(dates[0])} ~ ${DateUtil.formatForDisplay(dates[dates.length - 1])}`}</Text>
-          <TouchableOpacity onPress={this.handlePressRight}>
+          <TouchableOpacity onPress={this.handlePressRight} disabled={this.canGoNextPage()}>
             <Text>➡</Text>
           </TouchableOpacity>
         </View>
@@ -194,7 +213,7 @@ export default class Calendar extends Component {
             <Day
               key={i}
               d={d}
-              // doneThings={this.getDoneThings(days, d)}
+              doneThings={this.getDoneThings(days, d)}
               onPress={onPressDay}
               />
           )}
