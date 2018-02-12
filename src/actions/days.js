@@ -69,7 +69,7 @@ const saveThing = (thing, date) => {
   const thingData = Scheme.Thing(thing.id, thing.name, dates);
   Storage.set({
     key:  'things',
-    id:   thing.name,
+    id:   thing.id,
     data: thingData
   });
   return thingData;

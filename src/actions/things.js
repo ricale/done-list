@@ -12,6 +12,11 @@ const actions = createActions({
       SUCCESS: (result) => ({thingData: result}),
       FAILURE: () => ({}),
     },
+
+    REMOVE: {
+      SUCCESS: (result) => ({thingId: result}),
+      FAILURE: () => ({}),
+    },
   }
 });
 
@@ -32,6 +37,15 @@ export const updateThing = (thing) => {
     const d = {key: 'things', id: thing.id, data: thing};
     return Storage.set(d).then(() => {
       dispatch(actions.things.update.success(thing));
+    });
+  }
+}
+
+export const removeThing = (thing) => {
+  return dispatch => {
+    const d = {key: 'things', id: thing.id};
+    return Storage.remove(d).then(() => {
+      dispatch(actions.things.remove.success(d.id));
     });
   }
 }

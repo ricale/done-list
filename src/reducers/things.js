@@ -6,6 +6,12 @@ export default function things(state = initialState, action) {
     case 'THINGS/FETCH/SUCCESS':
       return {...state, ...action.payload};
 
+    case 'THINGS/REMOVE/SUCCESS':
+      const {thingId} = action.payload;
+      const result = {...state};
+      delete result[thingId];
+      return result;
+
     case 'THINGS/UPDATE/SUCCESS':
     case 'DAYS/ADD_DONE_THING/SUCCESS':
     case 'DAYS/REMOVE_DONE_THING/SUCCESS':

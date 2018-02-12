@@ -145,6 +145,11 @@ export default class Calendar extends Component {
   handlePressRight = () => {
     const {dates} = this.state;
     const lastDate = dates[dates.length - 1].clone().add(14, 'days');
+
+    if(!this.canGoNextPage()) {
+      return;
+    }
+
     this.setState({
       lastDate,
       dates: DateUtil.getCurrentWeeks(lastDate)
@@ -160,7 +165,7 @@ export default class Calendar extends Component {
   canGoNextPage() {
     const {dates} = this.state;
     const nextDate = dates[dates.length - 1].clone().add(1, 'days');
-    return DateUtil.isFuture(nextDate);
+    return !DateUtil.isFuture(nextDate);
   }
 
   getDatesForDisplay() {
@@ -198,9 +203,17 @@ export default class Calendar extends Component {
     return (
       <View style={style}>
         <View style={controllerStyle}>
-          <IconButton iconName='arrow-left' onPress={this.handlePressLeft} />
+          <IconButton
+            iconName='arrow-left'
+            onPress={this.handlePressLeft}
+            />
           <Text>{`${DateUtil.formatForDisplay(dates[0])} ~ ${DateUtil.formatForDisplay(dates[dates.length - 1])}`}</Text>
-          <IconButton iconName='arrow-right' onPress={this.handlePressRight} />
+          <IconButton
+            iconName='arrow-right'
+            color={this.canGoNextPage() ? undefined : 'lightgray'}
+            onPress={this.handlePressRight}
+            disabled={!this.canGoNextPage()}
+            />
         </View>
 
         <View style={daysStyle}>
