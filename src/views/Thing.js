@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {View, Text} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 
 import Container from 'components/Container';
 import ThingDates from 'components/ThingDates';
@@ -8,9 +9,9 @@ import TextButton from 'components/TextButton';
 import Input from 'components/Input';
 import Button from 'components/Button';
 import DateUtil from 'utils/DateUtil';
-import {updateThing} from 'actions/things';
+import {updateThing, removeThing} from 'actions/things';
 
-class UpdateThingForm extends Component {
+class ThingForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,12 +23,12 @@ class UpdateThingForm extends Component {
     this.setState({name})
   }
 
-  handlePress = () => {
-    this.props.onPress(this.state.name);
+  handlePressUpdate = () => {
+    this.props.onPressUpdate(this.state.name);
   }
 
   render() {
-    const {style} = this.props;
+    const {style, onPressRemove} = this.props;
     const {name} = this.state;
 
     return (
@@ -39,8 +40,16 @@ class UpdateThingForm extends Component {
           />
 
         <TextButton
-          onPress={this.handlePress}
+          onPress={this.handlePressUpdate}
           text='이름 수정'
+          style={{marginBottom: 2}}
+          />
+
+        <TextButton
+          onPress={onPressRemove}
+          disabled={!onPressRemove}
+          style={{backgroundColor: 'red'}}
+          text='삭제'
           />
       </View>
     );
@@ -51,6 +60,11 @@ class ThingView extends Component {
   handlePressUpdate = (name) => {
     const {data, updateThing} = this.props;
     updateThing({...data, name});
+  }
+
+  handlePressRemove = () => {
+    const {removeThing, data} = this.props;
+    removeThing(data).then(() => Actions.pop());
   }
 
   render() {
@@ -64,9 +78,10 @@ class ThingView extends Component {
             style={{flex: 2}}
             />
 
-          <UpdateThingForm
+          <ThingForm
             name={name}
-            onPress={this.handlePressUpdate}
+            onPressUpdate={this.handlePressUpdate}
+            onPressRemove={(dates || []).length === 0 ? this.handlePressRemove : undefined}
             style={{flex: 3}}
             />
         </View>
@@ -84,7 +99,9 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     updateThing: (...args) =>
-      dispatch(updateThing(...args))
+      dispatch(updateThing(...args)),
+    removeThing: (...args) =>
+      dispatch(removeThing(...args))
   }
 }
 
