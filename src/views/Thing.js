@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, Text} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 import Container from 'components/Container';
@@ -24,7 +24,14 @@ class ThingForm extends Component {
   }
 
   handlePressUpdate = () => {
-    this.props.onPressUpdate(this.state.name);
+    this.props.onPressUpdate(this.state.name).then(() =>
+      Alert.alert(
+        '수정이 완료되었습니다.',
+        '',
+        [{text: 'OK'},],
+        {cancelable: false}
+      )
+    );
   }
 
   render() {
@@ -59,7 +66,7 @@ class ThingForm extends Component {
 class ThingView extends Component {
   handlePressUpdate = (name) => {
     const {data, updateThing} = this.props;
-    updateThing({...data, name});
+    return updateThing({...data, name});
   }
 
   handlePressRemove = () => {
