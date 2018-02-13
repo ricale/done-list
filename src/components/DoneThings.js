@@ -37,7 +37,7 @@ class DoneThings extends Component {
 
   getThingNameStyle(thing) {
     const {allThings, fontSize, nameStyle} = this.props;
-    const backgroundColor = defaultColors[thing.id % 10];
+    const backgroundColor = defaultColors[thing.id % defaultColors.length];
 
     return {
       ...s.name,
