@@ -3,12 +3,9 @@ import {connect} from 'react-redux';
 import {View, TextInput} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
-import Container from 'components/Container';
-import DoneThings from 'components/DoneThings';
-import TextButton from 'components/TextButton';
-import Input from 'components/Input';
+import {Container, DoneThings, TextButton, Input} from 'components';
 import {addDoneThing, removeDoneThing} from 'actions/days';
-import DateUtil from 'utils/DateUtil';
+import {DateUtil} from 'utils';
 
 class AddDoneThingForm extends Component {
   constructor(props) {

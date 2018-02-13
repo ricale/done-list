@@ -3,12 +3,10 @@ import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
 import moment from 'moment';
 
-import Container from 'components/Container';
-import Calendar from 'components/Calendar';
+import {Container, Calendar} from 'components';
 import {getDays} from 'actions/days';
 import {getThings} from 'actions/things';
-import Storage from 'utils/Storage';
-import DateUtil from 'utils/DateUtil';
+import {Storage, DateUtil} from 'utils';
 
 class CalendarView extends Component {
   handlePressDay = (day) => {

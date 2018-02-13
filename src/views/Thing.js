@@ -3,13 +3,8 @@ import {connect} from 'react-redux';
 import {View, Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
-import Container from 'components/Container';
-import ThingDates from 'components/ThingDates';
-import TextButton from 'components/TextButton';
-import Input from 'components/Input';
-import Button from 'components/Button';
-import Text from 'components/Text';
-import DateUtil from 'utils/DateUtil';
+import {Container, ThingDates, TextButton, Input, Button, Text} from 'components';
+import {DateUtil} from 'utils';
 import {updateThing, removeThing} from 'actions/things';
 
 class ThingForm extends Component {

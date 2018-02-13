@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Router, Stack, Scene, Actions} from 'react-native-router-flux';
 
-import IconButton from 'components/IconButton';
+import {IconButton} from 'components';
 
 import Calendar from 'views/Calendar';
 import Day from 'views/Day';

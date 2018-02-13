@@ -1,5 +1,5 @@
 import {createActions} from 'redux-actions';
-import Storage from 'utils/Storage';
+import {Storage} from 'utils';
 
 const actions = createActions({
   THINGS: {

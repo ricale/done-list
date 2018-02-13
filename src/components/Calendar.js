@@ -2,10 +2,8 @@ import React, {Component} from 'react';
 import {View, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
-import DoneThings from 'components/DoneThings';
-import IconButton from 'components/IconButton';
-import Text from 'components/Text';
-import DateUtil from 'utils/DateUtil';
+import {DoneThings, IconButton, Text} from 'components';
+import {DateUtil} from 'utils';
 
 const dayStyle = {
   base: {

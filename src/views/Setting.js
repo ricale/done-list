@@ -2,11 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {View, TouchableOpacity, Alert} from 'react-native';
 
-import Container from 'components/Container';
-import Button from 'components/Button';
-import Text from 'components/Text';
+import {Container, Button, Text} from 'components';
 import {clearAll} from 'actions/days';
-import Storage from 'utils/Storage';
+import {Storage} from 'utils';
 
 class Setting extends Component {
   static defaultProps = {

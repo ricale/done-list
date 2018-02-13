@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {TouchableOpacity} from 'react-native';
 
-import Button from 'components/Button';
-import Icon from 'components/Icon';
+import {Button, Icon} from 'components';
 
 const IconButton = ({...args, style, iconName, color}) => (
   <Button {...args} style={[{padding: 10}, style]}>
