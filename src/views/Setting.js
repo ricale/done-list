@@ -19,7 +19,7 @@ class Setting extends Component {
   handlePressClear = () => {
     this.props.clearAll();
     Alert.alert(
-      '삭제가 완료되었습니다.',
+      '초기화가 완료되었습니다.',
       '',
       [{text: 'OK'},],
       {cancelable: false}
