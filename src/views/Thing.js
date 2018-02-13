@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, Text, Alert} from 'react-native';
+import {View, Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 import Container from 'components/Container';
@@ -8,6 +8,7 @@ import ThingDates from 'components/ThingDates';
 import TextButton from 'components/TextButton';
 import Input from 'components/Input';
 import Button from 'components/Button';
+import Text from 'components/Text';
 import DateUtil from 'utils/DateUtil';
 import {updateThing, removeThing} from 'actions/things';
 

@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 
 import {colors as defaultColors} from 'constants/colors';
 import IconButton from 'components/IconButton';
+import Text from 'components/Text';
 
 const s = {
   container: {

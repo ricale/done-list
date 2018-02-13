@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
 import Button from 'components/Button';
+import Text from 'components/Text';
 
 const TextButton = ({...args, style, text, color = '#FFF'}) => {
   const defaultStyle = {
