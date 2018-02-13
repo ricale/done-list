@@ -118,7 +118,7 @@ class ThingsView extends Component {
   render() {
     const {things} = this.props;
     return (
-      <Container>
+      <Container scroll={true}>
         <View style={{flexDirection: 'row', flexWrap: 'wrap', width: '100%'}}>
           {Object.keys(things).map((k,i) =>
             <Thing key={i} {...things[k]} />

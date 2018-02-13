@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, ScrollView} from 'react-native';
 
-const Container = ({children, ...props}) => (
-  <View {...props}>
-    {children}
-  </View>
+const Container = ({children, scroll, ...props}) => (
+  scroll ?
+    <ScrollView {...props}>
+      {children}
+    </ScrollView> :
+    <View {...props}>
+      {children}
+    </View>
 );
 
 Container.defaultProps = {
