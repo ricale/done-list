@@ -1,6 +1,5 @@
 import {createActions} from 'redux-actions';
-import Storage from 'utils/Storage';
-import DateUtil from 'utils/DateUtil';
+import {Storage, DateUtil} from 'utils';
 import Scheme from 'scheme';
 
 const actions = createActions({
