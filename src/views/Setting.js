@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import {View, TouchableOpacity, Alert} from 'react-native';
 
 import Container from 'components/Container';
 import Button from 'components/Button';
+import Text from 'components/Text';
 import {clearAll} from 'actions/days';
 import Storage from 'utils/Storage';
 
