@@ -7,6 +7,8 @@ import {IconButton, Text} from 'components';
 const s = {
   container: {
     alignItems: 'flex-start',
+    flexWrap: 'wrap',
+    overflow: 'hidden',
     marginLeft: 3,
     marginRight: 3
   },
@@ -17,6 +19,7 @@ const s = {
   name: {
     padding: 3,
     marginBottom: 2,
+    marginRight: 2
   },
   removeButton: {
     marginLeft: 4,
@@ -27,12 +30,9 @@ const s = {
 
 class DoneThings extends Component {
   static defaultProps = {
-    removeButton: false,
-
     style: {},
     thingStyle: {},
     nameStyle: {},
-    removeButtonStyle: {}
   };
 
   getThingNameStyle(thing) {
@@ -50,23 +50,18 @@ class DoneThings extends Component {
   render() {
     const {
       doneThings,
-      removeButton,
       fontSize,
       onPressRemove,
 
       style,
       thingStyle,
-      removeButtonStyle
     } = this.props;
 
-    const _style             = {...s.container,    ...style};
-    const _thingStyle        = {...s.thing,        ...thingStyle};
-    const _removeButtonStyle = {...s.removeButton, ...removeButtonStyle};
-
     return (
-      <View style={_style}>
+      <View style={[s.container, style]}>
+
         {(doneThings || []).map((thing,i) =>
-          <View key={i} style={_thingStyle}>
+          <View key={i} style={[s.thing, thingStyle]}>
             <Text style={this.getThingNameStyle(thing)}>{thing.name}</Text>
             {onPressRemove &&
               <IconButton
@@ -77,6 +72,7 @@ class DoneThings extends Component {
             }
           </View>
         )}
+
       </View>
     );
   }
