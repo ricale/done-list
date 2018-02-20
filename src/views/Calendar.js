@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
+// import RNFS from 'react-native-fs'
 import moment from 'moment';
 
 import {Container, Calendar} from 'components';
