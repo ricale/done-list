@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {View, TouchableOpacity, Alert} from 'react-native';
-import RNFS from 'react-native-fs';
 
 
 import {Container, Button, Text} from 'components';
@@ -18,26 +17,7 @@ class Setting extends Component {
   };
 
   componentWillMount() {
-    RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
-      .then((result) => {
-        console.log('GOT RESULT', result);
-    })
 
-
-    // write the file
-    // RNFS.writeFile(RNFS.DocumentDirectoryPath + '/test.txt', 'Lorem ipsum dolor sit amet', 'utf8')
-    //   .then((success) => {
-    //     console.log('FILE WRITTEN!');
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.message);
-    //   });
-
-    RNFS.readFile(RNFS.DocumentDirectoryPath + '/test.txt', 'utf8')
-      .then((contents) => {
-        // log the file contents
-        console.log(contents);
-      })
   }
 
   handlePressClear = () => {

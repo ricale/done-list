@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
-// import RNFS from 'react-native-fs'
+import firebase from 'react-native-firebase';
 import moment from 'moment';
 
 import {Container, Calendar} from 'components';
@@ -10,6 +10,24 @@ import {getThings} from 'actions/things';
 import {Storage, DateUtil} from 'utils';
 
 class CalendarView extends Component {
+  constructor(props) {
+    super(props);
+    this.ref = firebase.firestore().collection('donelist');
+    this.unsubscribe = null;
+  }
+
+  componentDidMount() {
+    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    // this.ref.add({
+    //   title: 'test',
+    //   complete: false,
+    // });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   handlePressDay = (day) => {
     Actions.day({day, title: DateUtil.formatForDisplay(day)});
   }
@@ -19,6 +37,10 @@ class CalendarView extends Component {
     getThings().then(() =>
       getDays(beginDate, lastDate)
     );
+  }
+
+  onCollectionUpdate = (querySnapshot) => {
+    console.log('querySnapshot', querySnapshot)
   }
 
   render() {
