@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "300212165041",
+    "firebase_url": "https://donelist-42b4f.firebaseio.com",
+    "project_id": "donelist-42b4f",
+    "storage_bucket": "donelist-42b4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300212165041:android:772c277b9d0aa3c7",
+        "android_client_info": {
+          "package_name": "net.ricalest.donelist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "300212165041-l559is4rud0pcdtp2p1q5hpqbp5cg7vj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjR5hodl5R12A3aAD7IqCU-w4zka-QrJ4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
