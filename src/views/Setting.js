@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {View, TouchableOpacity, Alert} from 'react-native';
 
-
 import {Container, Button, Text} from 'components';
 import {clearAll} from 'actions/days';
 import {Storage} from 'utils';
@@ -15,10 +14,6 @@ class Setting extends Component {
       margin: 1
     }
   };
-
-  componentWillMount() {
-
-  }
 
   handlePressClear = () => {
     this.props.clearAll();
