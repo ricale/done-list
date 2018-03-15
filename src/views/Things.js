@@ -33,8 +33,8 @@ const CountTable = (props) => {
     return hash;
   }, {'1w': 0, '4w': 0, '12w': 0});
 
-  const weeks = (DateUtil.diffFromToday(dates[0]) * -1) / 7;
-  const average = parseInt(dates.length / weeks * 10, 10) / 10;
+  const weeks = !!dates[0] && (DateUtil.diffFromToday(dates[0]) * -1 / 7);
+  const average = !!weeks && parseInt(dates.length / weeks * 10, 10) / 10;
   const has4Weeks = !!(counts['4w'] - counts['1w']);
   const has12Weeks = !!(counts['12w'] - counts['4w']);
 
