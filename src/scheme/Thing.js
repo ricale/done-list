@@ -1,5 +1,7 @@
 import {Storage} from 'utils';
 
+const NAME_MAX_LENGTH = 6;
+
 const spliceArray = (array, item) => {
   const result = array.slice(0);
   const itemIndex = result.indexOf(item);
@@ -18,9 +20,17 @@ function add(name, date) {
         ...things.map(r => r.id)
       ) + 1)
 
+    if((name || '').length === 0) {
+      throw 'Name is emtpy';
+    }
+
+    if(name.length > NAME_MAX_LENGTH) {
+      throw 'Name is too long';
+    }
+
     const isDuplicatedName = things.filter(thing => thing.name === name).length !== 0;
     if(isDuplicatedName) {
-      throw 'Duplicated name'
+      throw 'Duplicated name';
     }
 
     const thingData = addDate({id, name}, date);
@@ -31,6 +41,14 @@ function add(name, date) {
 
 function update(id, data) {
   return get().then(things => {
+    if((data.name || '').length === 0) {
+      throw 'Name is emtpy';
+    }
+
+    if(data.name.length > NAME_MAX_LENGTH) {
+      throw 'Name is too long';
+    }
+
     const isDuplicatedName = things.filter(thing => thing.name === data.name).length !== 0;
     if(isDuplicatedName) {
       throw 'Duplicated name';
