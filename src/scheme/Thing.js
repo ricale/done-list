@@ -8,35 +8,39 @@ const spliceArray = (array, item) => {
 };
 
 function get() {
-  return Storage.getByKey('things').then(values => {
-    const result = values.reduce((hash, item) => {
-      hash[item.id] = item;
-      return hash;
-    }, {});
-    return new Promise((resolve, reject) => resolve(result));
-  });
+  return Storage.getByKey('things');
 }
 
 function add(name, date) {
-  return Storage.getByKey('things').then(result => {
-    const id = result.length === 0 ? 0 :
+  return get().then(things => {
+    const id = things.length === 0 ? 0 :
       (Math.max(
-        ...result.map(r => r.id)
+        ...things.map(r => r.id)
       ) + 1)
+
+    const isDuplicatedName = things.filter(thing => thing.name === name).length !== 0;
+    if(isDuplicatedName) {
+      throw 'Duplicated name'
+    }
 
     const thingData = addDate({id, name}, date);
 
-    return new Promise((resolve, reject) => {
-      resolve(thingData);
-    });
+    return new Promise((resolve, reject) => resolve(thingData));
   })
 }
 
 function update(id, data) {
-  return Storage.set({
-    key: 'things',
-    id,
-    data
+  return get().then(things => {
+    const isDuplicatedName = things.filter(thing => thing.name === data.name).length !== 0;
+    if(isDuplicatedName) {
+      throw 'Duplicated name';
+    }
+
+    return Storage.set({
+      key: 'things',
+      id,
+      data
+    });
   });
 }
 

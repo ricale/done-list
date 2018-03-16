@@ -23,9 +23,13 @@ const actions = createActions({
 
 export const getThings = () => {
   return dispatch =>
-    Thing.get().then(result =>
+    Thing.get().then(values => {
+      const result = values.reduce((hash, item) => {
+        hash[item.id] = item;
+        return hash;
+      }, {});
       dispatch(actions.things.fetch.success(result))
-    );
+    });
 }
 
 export const updateThing = (thing) => {
