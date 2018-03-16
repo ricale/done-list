@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, TextInput} from 'react-native';
+import {View, TextInput, Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 import {Container, DoneThings, TextButton, Input} from 'components';
@@ -13,6 +13,12 @@ class AddDoneThingForm extends Component {
     this.state = {};
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.clear) {
+      this.setState({name: ''})
+    }
+  }
+
   handleChangeDoneThingName = (name) => {
     this.setState({name});
   }
@@ -22,7 +28,6 @@ class AddDoneThingForm extends Component {
 
     if(!!name) {
       this.props.onPressButton(name);
-      this.setState({name: ''});
     }
   }
 
@@ -48,6 +53,36 @@ class AddDoneThingForm extends Component {
 }
 
 class DayView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      clearForm: false
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      day,
+      error
+    } = this.props;
+    const {
+      day: nextDay,
+      error: nextError
+    } = nextProps;
+
+    const addedDoneThing = day.doneThings.length < nextDay.doneThings.length;
+    this.setState({clearForm: addedDoneThing});
+
+    if(error.timestamp !== nextError.timestamp) {
+      Alert.alert(
+        nextError.message,
+        '',
+        [{text: '확인'},],
+        {cancelable: false}
+      );
+    }
+  }
+
   handlePressAdd = (thingName) => {
     const {day, things, addDoneThing} = this.props;
 
@@ -70,6 +105,7 @@ class DayView extends Component {
 
   render() {
     const {day, things, inputStyle} = this.props;
+    const {clearForm} = this.state;
 
     return (
       <Container>
@@ -85,6 +121,7 @@ class DayView extends Component {
           <AddDoneThingForm
             onPressButton={this.handlePressAdd}
             style={{flex: 3, padding: 1}}
+            clear={clearForm}
             />
           </View>
       </Container>
@@ -93,15 +130,17 @@ class DayView extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const {days, things} = state;
+  const {days, things, error} = state;
   const date = DateUtil.formatForStore(ownProps.day);
   const day = days[date] || {
     date,
     doneThings: []
   };
+
   return {
     day,
-    things
+    things,
+    error
   };
 }
 

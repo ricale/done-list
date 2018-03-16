@@ -11,7 +11,7 @@ const actions = createActions({
 
     UPDATE: {
       SUCCESS: (result) => ({thingData: result}),
-      FAILURE: () => ({}),
+      FAILURE: (message) => ({message}),
     },
 
     REMOVE: {
@@ -36,6 +36,8 @@ export const updateThing = (thing) => {
   return dispatch =>
     Thing.update(thing.id, thing).then(() =>
       dispatch(actions.things.update.success(thing))
+    ).catch((message) =>
+      dispatch(actions.things.update.failure(message))
     );
 }
 

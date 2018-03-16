@@ -20,14 +20,7 @@ class ThingForm extends Component {
   }
 
   handlePressUpdate = () => {
-    this.props.onPressUpdate(this.state.name).then(() =>
-      Alert.alert(
-        '수정이 완료되었습니다.',
-        '',
-        [{text: 'OK'},],
-        {cancelable: false}
-      )
-    );
+    this.props.onPressUpdate(this.state.name);
   }
 
   render() {
@@ -60,6 +53,36 @@ class ThingForm extends Component {
 }
 
 class ThingView extends Component {
+  componentWillReceiveProps(nextProps) {
+    const {
+      data,
+      error
+    } = this.props;
+
+    const {
+      data: nextData,
+      error: nextError
+    } = nextProps;
+
+    if(data.name !== nextData.name) {
+      Alert.alert(
+        '수정이 완료되었습니다.',
+        '',
+        [{text: '확인'},],
+        {cancelable: false}
+      );
+    }
+
+    if(error.timestamp !== nextError.timestamp) {
+      Alert.alert(
+        nextError.message,
+        '',
+        [{text: '확인'},],
+        {cancelable: false}
+      );
+    }
+  }
+
   handlePressUpdate = (name) => {
     const {data, updateThing} = this.props;
     return updateThing({...data, name});
@@ -95,8 +118,8 @@ class ThingView extends Component {
 
 function mapStateToProps(state, ownProps) {
   const {id} = ownProps;
-  const {things} = state;
-  return {data: (things[id] || {})}
+  const {things, error} = state;
+  return {data: (things[id] || {}), error};
 }
 
 function mapDispatchToProps(dispatch) {

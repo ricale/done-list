@@ -1,6 +1,13 @@
 import {Storage} from 'utils';
 
 const NAME_MAX_LENGTH = 6;
+const MESSAGE = {
+  NAME: {
+    NOT_EXIST:  '이름을 입력해주세요.',
+    TOO_LONG:   '이름이 너무 깁니다. (최대 6글자)',
+    DUPLICATED: '중복된 이름입니다.'
+  }
+};
 
 const spliceArray = (array, item) => {
   const result = array.slice(0);
@@ -21,16 +28,16 @@ function add(name, date) {
       ) + 1)
 
     if((name || '').length === 0) {
-      throw 'Name is emtpy';
+      throw MESSAGE.NAME.NOT_EXIST;
     }
 
     if(name.length > NAME_MAX_LENGTH) {
-      throw 'Name is too long';
+      throw MESSAGE.NAME.TOO_LONG;
     }
 
     const isDuplicatedName = things.filter(thing => thing.name === name).length !== 0;
     if(isDuplicatedName) {
-      throw 'Duplicated name';
+      throw MESSAGE.NAME.DUPLICATED;
     }
 
     const thingData = addDate({id, name}, date);
@@ -42,16 +49,16 @@ function add(name, date) {
 function update(id, data) {
   return get().then(things => {
     if((data.name || '').length === 0) {
-      throw 'Name is emtpy';
+      throw MESSAGE.NAME.NOT_EXIST;
     }
 
     if(data.name.length > NAME_MAX_LENGTH) {
-      throw 'Name is too long';
+      throw MESSAGE.NAME.TOO_LONG;
     }
 
     const isDuplicatedName = things.filter(thing => thing.name === data.name).length !== 0;
     if(isDuplicatedName) {
-      throw 'Duplicated name';
+      throw MESSAGE.NAME.DUPLICATED;
     }
 
     return Storage.set({

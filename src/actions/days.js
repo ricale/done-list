@@ -9,17 +9,17 @@ const actions = createActions({
   DAYS: {
     FETCH: {
       SUCCESS: (result) => (result),
-      FAILURE: () => ({}),
+      FAILURE: (message) => ({message}),
     },
 
     ADD_DONE_THING: {
       SUCCESS: (dayData, thingData) => ({dayData, thingData}),
-      FAILURE: () => ({}),
+      FAILURE: (message) => ({message}),
     },
 
     REMOVE_DONE_THING: {
       SUCCESS: (dayData, thingData) => ({dayData, thingData}),
-      FAILURE: () => ({}),
+      FAILURE: (message) => ({message}),
     },
 
     CLEAR: {
@@ -44,15 +44,17 @@ export const addDoneThing = (day, thing) => {
   return dispatch => {
     if(thing.id === undefined) {
       return Thing.add(thing.name, day.date).then(thingData => {
-        const dayData = Day.AddDoneThing(day, thingData.id);
+        const dayData = Day.addDoneThing(day, thingData.id);
         return dispatch(
           actions.days.addDoneThing.success(dayData, thingData)
         )
-      });
+      }).catch(message =>
+        dispatch(actions.days.addDoneThing.failure(message))
+      );
 
     } else {
       const thingData = Thing.addDate(thing, day.date);
-      const dayData = Day.AddDoneThing(day, thingData.id);
+      const dayData = Day.addDoneThing(day, thingData.id);
       return dispatch(
         actions.days.addDoneThing.success(dayData, thingData)
       )
