@@ -20,7 +20,7 @@ class Setting extends Component {
     Alert.alert(
       '초기화가 완료되었습니다.',
       '',
-      [{text: 'OK'},],
+      [{text: '확인'},],
       {cancelable: false}
     );
   }

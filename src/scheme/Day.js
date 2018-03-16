@@ -26,7 +26,7 @@ function get(beginDate = moment(), endDate = moment()) {
   )
 }
 
-function AddDoneThing(day, doneThingId) {
+function addDoneThing(day, doneThingId) {
   const yearmonth = day.date.slice(0, 6);
   const dayOfMonth = day.date.slice(6);
   const dayData = {
@@ -66,6 +66,6 @@ function removeAll() {
 
 export default {
   get,
-  AddDoneThing,
+  addDoneThing,
   removeDone
 };
